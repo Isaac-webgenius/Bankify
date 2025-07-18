@@ -1,13 +1,8 @@
 'use client';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { sidebarLinks } from "@/constants";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -20,45 +15,41 @@ const MobileNav = ({ user }: MobileNavProps) => {
 
   return (
     <section>
-      <Sheet>
-        <SheetTrigger>
-          <Image
-            src='/icons/hamburger.svg'
-            width={30}
-            height={30}
-            alt="menu"
-            className="cursor-pointer"
-          />
-        </SheetTrigger>
-        
-        <SheetContent>
+      <Avatar>
+        <AvatarImage src='https://github.com/shadcn.png' />
+        <AvatarFallback>{user.firstName[0]}</AvatarFallback>
+      </Avatar>
+      
+      <Tabs defaultValue="Home" className="mobilenav-tabs">
+        <TabsList className="mobilenav-tablist glassmorphism">
           {sidebarLinks.map((item) => {
             const isActive =
               pathname === item.route || pathname.startsWith(`${item.route}/`);
 
             return (
-              <Link
-                href={item.route}
+              <TabsTrigger 
+                value={item.label} 
                 key={item.label}
-                className={cn("sidebar-link", { "bg-bank-gradient": isActive })}
+                className={cn("mobilenav-links", { "bg-bank-gradient": isActive })}  
               >
-                <div className="relative size-6">
-                  <Image
-                    src={item.imgURL}
-                    alt={item.label}
-                    fill
-                    className={cn({ "brightness-[3] invert-0": isActive })}
-                  />
-                </div>
-
-                <p className={cn("sidebar-label", { "!text-white": isActive })}>
-                  {item.label}
-                </p>
-              </Link>
+                <Link
+                  href={item.route}
+                  key={item.label}
+                >
+                  <div className="relative size-8">
+                    <Image
+                      src={item.imgURL}
+                      alt={item.label}
+                      fill
+                      className={cn({ "brightness-[3] invert-0": isActive })}
+                    />
+                  </div>
+                </Link>
+              </TabsTrigger>
             );
           })}
-        </SheetContent>
-      </Sheet>
+        </TabsList>
+      </Tabs>
     </section>
   )
 }
