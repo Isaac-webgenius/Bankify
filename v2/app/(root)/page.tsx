@@ -2,10 +2,12 @@ import React from 'react';
 import Header from '@/components/Header';
 import TotalBalance from '@/components/TotalBalance';
 import RightSidebar from '@/components/RightSidebar';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 
-const Dashboard = () => {
-  const loggedIn = { firstName: "Nathan", lastName: "Stark", email: 'contact@Nate.dev'}
+const Dashboard = async () => {
+  const loggedIn = await getLoggedInUser();
 
+  
   return (
     <section className='home'>
       <div className="home-content">
@@ -13,7 +15,7 @@ const Dashboard = () => {
           className="home-header" 
           type="greeting"
           title="Welcome"
-          user={loggedIn?.firstName || 'Guest'}
+          user={loggedIn?.name || 'Guest'}
           subtext="Access and manage your account and transaction efficiently."
         />
 
